@@ -18,52 +18,8 @@ namespace SpriteKind {
     export const menu = SpriteKind.create()
     export const boss = SpriteKind.create()
 }
-controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (startGame == 0) {
-        if (menuSelect == 1) {
-            if (cursor.overlapsWith(lvl1)) {
-                startMaze()
-            } else if (cursor.overlapsWith(lvl2)) {
-                let lvl2Enabled = 0
-                if (lvl2Enabled == 1) {
-                    startMaze()
-                } else {
-                    game.showLongText("This level has not been unlocked.", DialogLayout.Top)
-                }
-            } else if (cursor.overlapsWith(lvl3)) {
-                let level3Enabled = 0
-                if (level3Enabled == 1) {
-                    startMaze()
-                } else {
-                    game.showLongText("This level has not been unlocked.", DialogLayout.Top)
-                }
-            }
-        } else {
-            menuSelect = 1
-        }
-    } else if (startGame == 1) {
-        let roBito: Sprite = null
-        roBito.setImage(img`
-            . . . . . c c 4 c c c c c . . . 
-            . . . . c b b d d d d d d c . . 
-            . . . . c b d d d d d d d c . . 
-            . 1 . . c 2 f d f 2 f d d c . . 
-            c 1 b . c b d d d d d d d c . . 
-            c 9 b . c d d d d d d d c c . . 
-            c 1 b . c d d f f f d 8 c c . . 
-            . c 1 b . c c c c c 8 6 8 c . . 
-            . c 9 b . . c b d d 8 4 6 8 8 8 
-            . . 1 b . c b d d d 8 6 4 6 6 8 
-            . c 2 c 2 b d d d d 8 6 6 6 8 . 
-            . . d d . c b d d d d 8 6 8 . . 
-            . . . c . . c b d d d d 8 . . . 
-            . . . . . . c c c c c c . . . . 
-            . . . . . . c . . . c c . . . . 
-            . . . . . . c c . . . c c . . . 
-            `)
-    }
-})
-function titleScreen () {
+function loadTitleScreen (characterImg: Image) {
+    titleScreen = 1
     scene.setBackgroundImage(img`
         ................................................................................................................................................................
         ................................................................................................................................................................
@@ -186,40 +142,44 @@ function titleScreen () {
         5555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555
         ................................................................................................................................................................
         `)
-    minotaur = sprites.create(img`
-        ..........bd.............d......
-        ..........bddddddddeeeeedd......
-        ...........bbbbbbbbeeeeebb......
-        ................eeeedd22........
-        ...............eeedddddd5.......
-        .............4444eeeeeddd.......
-        ............444ddddeeeddd.......
-        ...........4444ddddddee.........
-        ..........44444ddddddddd........
-        ..........44444ddddddddd........
-        .........44.444dddddddd4........
-        .........44...4dddddddd4........
-        ........444..44ddddddd444.......
-        ........444..4444dddd4444.......
-        .......444...44dddddd..44.......
-        ......444...444dddddd..44.......
-        ......44...eeeddddddd...4.......
-        ......44..eeeeedddddd..44.......
-        ......44..eeeeedddddd..4........
-        ......445..eeeedddddce.4........
-        ......555..eee..ddddcce4........
-        ...........eee....cccc44e.......
-        ...........eee....ccccc.ee......
-        ..........eee......cccc..ee...d.
-        ..........eee.......ccc...ee..d.
-        ..........eee.......ccc...deedd.
-        .....fffffeeefffff..cc...1ddeed.
-        .ffffffffffeefffffcccfff.1dddee.
-        ..fffffffffeeffffffccfff.11ddde.
-        ....fffffff5eefffffcccfff.111d..
-        .....ffffff555fffff5ccffffff1d..
-        ......fffff555fffff555ffffff111.
-        `, SpriteKind.ux)
+    titleCharacterImg = characterImg
+    if (!(titleCharacterImg)) {
+        titleCharacterImg = img`
+            ..........bd.............d......
+            ..........bddddddddeeeeedd......
+            ...........bbbbbbbbeeeeebb......
+            ................eeeedd22........
+            ...............eeedddddd5.......
+            .............4444eeeeeddd.......
+            ............444ddddeeeddd.......
+            ...........4444ddddddee.........
+            ..........44444ddddddddd........
+            ..........44444ddddddddd........
+            .........44.444dddddddd4........
+            .........44...4dddddddd4........
+            ........444..44ddddddd444.......
+            ........444..4444dddd4444.......
+            .......444...44dddddd..44.......
+            ......444...444dddddd..44.......
+            ......44...eeeddddddd...4.......
+            ......44..eeeeedddddd..44.......
+            ......44..eeeeedddddd..4........
+            ......445..eeeedddddce.4........
+            ......555..eee..ddddcce4........
+            ...........eee....cccc44e.......
+            ...........eee....ccccc.ee......
+            ..........eee......cccc..ee...d.
+            ..........eee.......ccc...ee..d.
+            ..........eee.......ccc...deedd.
+            .....fffffeeefffff..cc...1ddeed.
+            .ffffffffffeefffffcccfff.1dddee.
+            ..fffffffffeeffffffccfff.11ddde.
+            ....fffffff5eefffffcccfff.111d..
+            .....ffffff555fffff5ccffffff1d..
+            ......fffff555fffff555ffffff111.
+            `
+    }
+    titleCharacter = sprites.create(titleCharacterImg, SpriteKind.ux)
     pressA = sprites.create(img`
         ................................
         .999999..999999...9999.9999.9999
@@ -254,22 +214,37 @@ function titleScreen () {
         .............88......88.........
         ................................
         `, SpriteKind.ux)
-    minotaur.setPosition(70, 80)
+    titleCharacter.setPosition(70, 80)
     pressA.setPosition(70, 80)
-    while (menuSelect == 0) {
-        minotaur.setFlag(SpriteFlag.Invisible, true)
+    while (levelMenu == 0) {
+        titleCharacter.setFlag(SpriteFlag.Invisible, true)
         pressA.setFlag(SpriteFlag.Invisible, false)
         pause(500)
-        minotaur.setFlag(SpriteFlag.Invisible, false)
+        titleCharacter.setFlag(SpriteFlag.Invisible, false)
         pressA.setFlag(SpriteFlag.Invisible, true)
         pause(500)
     }
-    minotaur.setFlag(SpriteFlag.Invisible, true)
+    titleCharacter.setFlag(SpriteFlag.Invisible, true)
     pressA.setFlag(SpriteFlag.Invisible, true)
     lvlMenu()
 }
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (titleScreen) {
+        titleScreen = 0
+        levelMenu = 1
+    }
+    if (levelMenu == 1) {
+        if (cursor.overlapsWith(lvl1)) {
+            startMaze()
+        } else if (cursor.overlapsWith(lvl2)) {
+            startMaze()
+        } else if (cursor.overlapsWith(lvl3)) {
+            startMaze()
+        }
+    }
+})
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (menuSelect == 1) {
+    if (levelMenu == 1) {
         if (controller.down.isPressed()) {
             if (cursor.y <= 80) {
                 cursor.y += 10
@@ -328,20 +303,22 @@ function lvlMenu () {
     menuList = sprites.allOfKind(SpriteKind.menu)
 }
 function startMaze () {
-    menuSelect = 0
+    levelMenu = 0
     startGame = 1
     cursor.setFlag(SpriteFlag.Invisible, true)
     for (let value4 of menuList) {
         value4.setFlag(SpriteFlag.Invisible, true)
     }
 }
+let startGame = 0
 let menuList: Sprite[] = []
-let pressA: Sprite = null
-let minotaur: Sprite = null
 let lvl3: Sprite = null
 let lvl2: Sprite = null
 let lvl1: Sprite = null
 let cursor: Sprite = null
-let menuSelect = 0
-let startGame = 0
-titleScreen()
+let levelMenu = 0
+let pressA: Sprite = null
+let titleCharacter: Sprite = null
+let titleScreen = 0
+let titleCharacterImg: Image = null
+loadTitleScreen(titleCharacterImg)
