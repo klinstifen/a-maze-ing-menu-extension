@@ -1,5 +1,5 @@
 /**
- * An extension for loading title screens and menus
+ * A titlescreen and menu extension for A-MAZE-ING
  */
 
 //% color="#AA278D" weight=100
