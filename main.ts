@@ -1,8 +1,5 @@
 /**
- * Functions are mapped to blocks using various macros
- * in comments starting with %. The most important macro
- * is "block", and it specifies that a block should be
- * generated for an **exported** function.
+ * An extension for loading title screens and menus
  */
 
 //% color="#AA278D" weight=100
@@ -14,6 +11,7 @@ namespace A_MAZE_ING {
     const SPRITE_KIND_MENU = SpriteKind.create()
 
     //% block
+    //% characterImg.shadow="screen_image_picker"
     export function loadTitleMenu (characterImg: Image) {
         scene.setBackgroundImage(img`
             ................................................................................................................................................................
@@ -138,8 +136,24 @@ namespace A_MAZE_ING {
             ................................................................................................................................................................
             `)
         titleScreen = 1
-        titleCharacterImg = characterImg
-        if (!(titleCharacterImg)) {
+        if (characterImg.equals(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . .
+        `)) {
             titleCharacterImg = img`
                 ..........bd.............d......
                 ..........bddddddddeeeeedd......
@@ -174,6 +188,8 @@ namespace A_MAZE_ING {
                 .....ffffff555fffff5ccffffff1d..
                 ......fffff555fffff555ffffff111.
                 `
+        } else {
+            titleCharacterImg = characterImg
         }
         titleCharacter = sprites.create(titleCharacterImg, SPRITE_KIND_UX)
         pressA = sprites.create(img`
@@ -445,7 +461,5 @@ namespace A_MAZE_ING {
     let cursor: Sprite = null
     let levelMenu = 0
     let titleCharacterImg: Image = null
-    loadTitleMenu(titleCharacterImg)
-    returnLevel()
 
 }
