@@ -253,6 +253,16 @@ namespace A_MAZE_ING {
     //% block
     //% group="menus"
     export function loadLevelsMenu () {
+        store = sprites.create(img`
+            9 9 9 . 9 9 9 9 9 . 9 9 9 9 . 9 9 9 9 . 9 9 9 . 
+            9 . . . . . 9 . . . 9 . . 9 . 9 . . 9 . 9 . . . 
+            9 . . . . . 9 . . . 9 . . 9 . 9 . . 9 . 9 . . . 
+            9 9 9 . . . 9 . . . 9 . . 9 . 9 9 9 9 . 9 9 9 . 
+            . . 9 . . . 9 . . . 9 . . 9 . 9 9 . . . 9 . . . 
+            . . 9 . . . 9 . . . 9 . . 9 . 9 . 9 . . 9 . . . 
+            . . 9 . . . 9 . . . 9 . . 9 . 9 . . 9 . 9 . . . 
+            9 9 9 . . . 9 . . . 9 9 9 9 . 9 . . 9 . 9 9 9 . 
+            `, SPRITE_KIND_MENU)
         lvl1 = sprites.create(img`
             9 9 . 9 . . . . 9 . 9 9 . . . . . . . 9 9 9 9 . 
             9 9 . 9 . . . . 9 . 9 9 . . . . . . . 9 9 9 9 . 
@@ -333,14 +343,15 @@ namespace A_MAZE_ING {
             9 9 9 9 . 9 9 . . . 9 9 9 9 . . . . 9 . . 9 . . 
             9 9 9 9 . 9 9 . . . 9 9 9 9 . . . . 9 9 9 9 . . 
             `, SPRITE_KIND_MENU)
-        lvl1.setPosition(75, 70)
-        lvl2.setPosition(75, 80)
-        lvl3.setPosition(75, 90)
-        lvl4.setPosition(75, 100)
-        lvl5.setPosition(75, 110)
-        lvl6.setPosition(75, 120)
-        lvl7.setPosition(75, 130)
-        lvl8.setPosition(75, 140)
+        store.setPosition(75,70)
+        lvl1.setPosition(75, 80)
+        lvl2.setPosition(75, 90)
+        lvl3.setPosition(75, 100)
+        lvl4.setPosition(75, 110)
+        lvl5.setPosition(75, 120)
+        lvl6.setPosition(75, 130)
+        lvl7.setPosition(75, 140)
+        lvl8.setPosition(75, 150)
         cursor = sprites.create(img`
             . . . . . . f f f f f f 
             . . . 3 3 3 f f f f f f 
@@ -354,7 +365,7 @@ namespace A_MAZE_ING {
         cursor.setPosition(58, 80)
         cursor.z = -10
         menuList = sprites.allOfKind(SPRITE_KIND_MENU)
-        for(let i = numLevels; i < maxLevels; i++){
+        for(let i = numLevels+1; i < maxLevels; i++){
             menuList.pop().destroy()
         }
         levelMenu = 1
@@ -369,13 +380,18 @@ namespace A_MAZE_ING {
     //% group="info"
     export function selectedLevel () {
         while (levelMenu) {
-            if (cursor.overlapsWith(lvl1)) {
+            for(let choice of menuList){
+                if(cursor.overlapsWith(choice)){
+                    levelChoice = menuList.indexOf(choice)
+                }
+            }
+            /**if (cursor.overlapsWith(lvl1)) {
                 levelChoice = 1
             } else if (cursor.overlapsWith(lvl2)) {
                 levelChoice = 2
             } else {
                 levelChoice = 3
-            }
+            }**/
             pause(200)
         }
         cursor.setFlag(SpriteFlag.Invisible, true)
@@ -549,7 +565,7 @@ namespace A_MAZE_ING {
         }
     })
 
-    
+    let store: Sprite = null
     let lvl8: Sprite = null
     let lvl7: Sprite = null
     let lvl6: Sprite = null
