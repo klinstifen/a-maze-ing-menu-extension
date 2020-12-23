@@ -11,6 +11,15 @@ namespace A_MAZE_ING {
     const SPRITE_KIND_MENU = SpriteKind.create()
 
     //% block
+    //% group="configure"
+    //% x.defl=0
+    export function setLevelCount(x: number){
+        numLevels = x
+    }
+
+    //% block
+    //% group="menus"
+    //% weight=60
     //% characterImg.shadow="screen_image_picker"
     export function loadTitleMenu (characterImg: Image) {
         scene.setBackgroundImage(img`
@@ -238,11 +247,127 @@ namespace A_MAZE_ING {
         }
         titleCharacter.setFlag(SpriteFlag.Invisible, true)
         pressA.setFlag(SpriteFlag.Invisible, true)
-        loadLevelSelect()
+        loadLevelsMenu()
     }
 
-    //%block
-    export function returnLevel () {
+    //% block
+    //% group="menus"
+    export function loadLevelsMenu () {
+        lvl1 = sprites.create(img`
+            9 9 . 9 . . . . 9 . 9 9 . . . . . . . 9 9 9 9 . 
+            9 9 . 9 . . . . 9 . 9 9 . . . . . . . 9 9 9 9 . 
+            9 9 . 9 . . . . 9 . 9 9 . . . . . . . . . 9 9 . 
+            9 9 . . 9 . . 9 . . 9 9 . . . . . . . . . 9 9 . 
+            9 9 . . 9 . . 9 . . 9 9 . . . . . . . . . 9 9 . 
+            9 9 . . . 9 9 . . . 9 9 . . . . . . . . . 9 9 . 
+            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . . . . . 9 9 . 
+            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . . . . . 9 9 . 
+            `, SPRITE_KIND_MENU)
+        lvl2 = sprites.create(img`
+            9 9 . 9 . . . . 9 . 9 9 . . . . . . 9 9 9 9 . . 
+            9 9 . 9 . . . . 9 . 9 9 . . . . . 9 9 9 9 9 9 . 
+            9 9 . 9 . . . . 9 . 9 9 . . . . . 9 9 . . 9 9 . 
+            9 9 . . 9 . . 9 . . 9 9 . . . . . . . . 9 9 . . 
+            9 9 . . 9 . . 9 . . 9 9 . . . . . . 9 9 9 9 . . 
+            9 9 . . . 9 9 . . . 9 9 . . . . . . 9 9 . . . . 
+            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . 9 9 9 9 9 9 . 
+            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . 9 9 9 9 9 9 . 
+            `, SPRITE_KIND_MENU)
+        lvl3 = sprites.create(img`
+            9 9 . 9 . . . . 9 . 9 9 . . . . . . 9 9 9 9 9 . 
+            9 9 . 9 . . . . 9 . 9 9 . . . . . . 9 9 9 9 9 . 
+            9 9 . 9 . . . . 9 . 9 9 . . . . . . . . . . 9 . 
+            9 9 . . 9 . . 9 . . 9 9 . . . . . . . 9 9 9 9 . 
+            9 9 . . 9 . . 9 . . 9 9 . . . . . . . 9 9 9 9 . 
+            9 9 . . . 9 9 . . . 9 9 . . . . . . . . . . 9 . 
+            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . . 9 9 9 9 9 . 
+            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . . 9 9 9 9 9 . 
+            `, SPRITE_KIND_MENU)
+        lvl4 = sprites.create(img`
+            9 9 . 9 . . . . 9 . 9 9 . . . . . . 9 9 . 9 9 . 
+            9 9 . 9 . . . . 9 . 9 9 . . . . . . 9 9 . 9 9 . 
+            9 9 . 9 . . . . 9 . 9 9 . . . . . . 9 9 . 9 9 . 
+            9 9 . . 9 . . 9 . . 9 9 . . . . . . 9 9 9 9 9 . 
+            9 9 . . 9 . . 9 . . 9 9 . . . . . . 9 9 9 9 9 . 
+            9 9 . . . 9 9 . . . 9 9 . . . . . . . . . 9 9 . 
+            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . . . . . 9 9 . 
+            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . . . . . 9 9 . 
+            `, SPRITE_KIND_MENU)
+        lvl5 = sprites.create(img`
+            9 9 . 9 . . . . 9 . 9 9 . . . . . . 9 9 9 9 9 . 
+            9 9 . 9 . . . . 9 . 9 9 . . . . . . 9 9 9 9 9 . 
+            9 9 . 9 . . . . 9 . 9 9 . . . . . . 9 9 . . . . 
+            9 9 . . 9 . . 9 . . 9 9 . . . . . . 9 9 . . . . 
+            9 9 . . 9 . . 9 . . 9 9 . . . . . . 9 9 9 9 9 . 
+            9 9 . . . 9 9 . . . 9 9 . . . . . . . . . 9 9 . 
+            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . . 9 9 9 9 9 . 
+            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . . 9 9 9 9 9 . 
+            `, SPRITE_KIND_MENU)
+        lvl6 = sprites.create(img`
+            9 9 . 9 . . . . 9 . 9 9 . . . . . . 9 9 . . . . 
+            9 9 . 9 . . . . 9 . 9 9 . . . . . . 9 9 . . . . 
+            9 9 . 9 . . . . 9 . 9 9 . . . . . . 9 9 . . . . 
+            9 9 . . 9 . . 9 . . 9 9 . . . . . . 9 9 9 9 9 . 
+            9 9 . . 9 . . 9 . . 9 9 . . . . . . 9 9 . . 9 . 
+            9 9 . . . 9 9 . . . 9 9 . . . . . . 9 9 . . 9 . 
+            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . . 9 9 9 9 9 . 
+            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . . 9 9 9 9 9 . 
+            `, SPRITE_KIND_MENU)
+        lvl7 = sprites.create(img`
+            9 9 . 9 . . . . 9 . 9 9 . . . . . 9 9 9 9 9 . . 
+            9 9 . 9 . . . . 9 . 9 9 . . . . . 9 9 9 9 9 . . 
+            9 9 . 9 . . . . 9 . 9 9 . . . . . . . . 9 9 . . 
+            9 9 . . 9 . . 9 . . 9 9 . . . . . . . 9 9 9 9 . 
+            9 9 . . 9 . . 9 . . 9 9 . . . . . . . 9 9 9 9 . 
+            9 9 . . . 9 9 . . . 9 9 . . . . . . . . 9 9 . . 
+            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . . . . 9 9 . . 
+            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . . . . 9 9 . . 
+            `, SPRITE_KIND_MENU)
+        lvl8 = sprites.create(img`
+            9 9 . 9 . . . . 9 . 9 9 . . . . . . 9 9 9 9 . . 
+            9 9 . 9 . . . . 9 . 9 9 . . . . . . 9 . . 9 . . 
+            9 9 . 9 . . . . 9 . 9 9 . . . . . . 9 . . 9 . . 
+            9 9 . . 9 . . 9 . . 9 9 . . . . . . 9 9 9 9 . . 
+            9 9 . . 9 . . 9 . . 9 9 . . . . . . 9 9 9 9 . . 
+            9 9 . . . 9 9 . . . 9 9 . . . . . . 9 . . 9 . . 
+            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . . 9 . . 9 . . 
+            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . . 9 9 9 9 . . 
+            `, SPRITE_KIND_MENU)
+        lvl1.setPosition(75, 70)
+        lvl2.setPosition(75, 80)
+        lvl3.setPosition(75, 90)
+        lvl4.setPosition(75, 100)
+        lvl5.setPosition(75, 110)
+        lvl6.setPosition(75, 120)
+        lvl7.setPosition(75, 130)
+        lvl8.setPosition(75, 140)
+        cursor = sprites.create(img`
+            . . . . . . f f f f f f 
+            . . . 3 3 3 f f f f f f 
+            . . 3 3 3 3 3 f f f f f 
+            . . 3 3 3 3 3 f f f f f 
+            . . 3 3 3 3 3 f f f f f 
+            . . 2 3 3 3 2 f f f f f 
+            . . . 2 2 2 f f f f f f 
+            . . . . . . f f f f f f 
+            `, playerSprite)
+        cursor.setPosition(58, 80)
+        cursor.z = -10
+        menuList = sprites.allOfKind(SPRITE_KIND_MENU)
+        for(let i = numLevels; i < maxLevels; i++){
+            menuList.pop().destroy()
+        }
+        levelMenu = 1
+        for (let value of menuList) {
+            if (value.y > 90 || value.y < 70) {
+                value.setFlag(SpriteFlag.Invisible, true)
+            }
+        }
+    }
+
+    //% block
+    //% group="info"
+    export function selectedLevel () {
         while (levelMenu) {
             if (cursor.overlapsWith(lvl1)) {
                 levelChoice = 1
@@ -393,63 +518,43 @@ namespace A_MAZE_ING {
     controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
         if (levelMenu == 1) {
             if (controller.down.isPressed()) {
-                if (cursor.y <= 80) {
-                    cursor.y += 10
-                } else {
-                    cursor.y = 70
+                if(menuList[menuList.length-1].y != 80){
+                    for (let value of menuList) {
+                        value.y -= 10
+                        if (value.y < 70 || value.y > 90) {
+                            value.setFlag(SpriteFlag.Invisible, true)
+                        } else {
+                            value.setFlag(SpriteFlag.Invisible, false)
+                        }
+                    }
+                } 
+            }
+        }
+    })
+
+    controller.up.onEvent(ControllerButtonEvent.Pressed, function() {
+        if (levelMenu == 1) {
+            if (controller.up.isPressed()) {
+                if(menuList[0].y != 80){
+                    for (let value of menuList) {
+                        value.y += 10
+                        if (value.y > 90 || value.y < 70){
+                            value.setFlag(SpriteFlag.Invisible, true)
+                        } else {
+                            value.setFlag(SpriteFlag.Invisible, false)
+                        }
+                    }
                 }
             }
         }
     })
-    function loadLevelSelect () {
-        lvl1 = sprites.create(img`
-            9 9 . 9 . . . . 9 . 9 9 . . . . . . . 9 9 9 9 . 
-            9 9 . 9 . . . . 9 . 9 9 . . . . . . . 9 9 9 9 . 
-            9 9 . 9 . . . . 9 . 9 9 . . . . . . . . . 9 9 . 
-            9 9 . . 9 . . 9 . . 9 9 . . . . . . . . . 9 9 . 
-            9 9 . . 9 . . 9 . . 9 9 . . . . . . . . . 9 9 . 
-            9 9 . . . 9 9 . . . 9 9 . . . . . . . . . 9 9 . 
-            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . . . . . 9 9 . 
-            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . . . . . 9 9 . 
-            `, SPRITE_KIND_MENU)
-        lvl2 = sprites.create(img`
-            9 9 . 9 . . . . 9 . 9 9 . . . . . . 9 9 9 9 . . 
-            9 9 . 9 . . . . 9 . 9 9 . . . . . 9 9 9 9 9 9 . 
-            9 9 . 9 . . . . 9 . 9 9 . . . . . 9 9 . . 9 9 . 
-            9 9 . . 9 . . 9 . . 9 9 . . . . . . . . 9 9 . . 
-            9 9 . . 9 . . 9 . . 9 9 . . . . . . 9 9 9 9 . . 
-            9 9 . . . 9 9 . . . 9 9 . . . . . . 9 9 . . . . 
-            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . 9 9 9 9 9 9 . 
-            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . 9 9 9 9 9 9 . 
-            `, SPRITE_KIND_MENU)
-        lvl3 = sprites.create(img`
-            9 9 . 9 . . . . 9 . 9 9 . . . . . . 9 9 9 9 9 . 
-            9 9 . 9 . . . . 9 . 9 9 . . . . . . 9 9 9 9 9 . 
-            9 9 . 9 . . . . 9 . 9 9 . . . . . . . . . . 9 . 
-            9 9 . . 9 . . 9 . . 9 9 . . . . . . . 9 9 9 9 . 
-            9 9 . . 9 . . 9 . . 9 9 . . . . . . . 9 9 9 9 . 
-            9 9 . . . 9 9 . . . 9 9 . . . . . . . . . . 9 . 
-            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . . 9 9 9 9 9 . 
-            9 9 9 9 . 9 9 . . . 9 9 9 9 . . . . 9 9 9 9 9 . 
-            `, SPRITE_KIND_MENU)
-        lvl1.setPosition(75, 70)
-        lvl2.setPosition(75, 80)
-        lvl3.setPosition(75, 90)
-        cursor = sprites.create(img`
-            . . . . . . f f f f f f 
-            . . . 3 3 3 f f f f f f 
-            . . 3 3 3 3 3 f f f f f 
-            . . 3 3 3 3 3 f f f f f 
-            . . 3 3 3 3 3 f f f f f 
-            . . 2 3 3 3 2 f f f f f 
-            . . . 2 2 2 f f f f f f 
-            . . . . . . f f f f f f 
-            `, playerSprite)
-        cursor.setPosition(58, 70)
-        cursor.z = -10
-        menuList = sprites.allOfKind(SPRITE_KIND_MENU)
-        levelMenu = 1
-    }
+
+    
+    let lvl8: Sprite = null
+    let lvl7: Sprite = null
+    let lvl6: Sprite = null
+    let lvl5: Sprite = null
+    let lvl4: Sprite = null
     let lvl3: Sprite = null
     let pressA: Sprite = null
     let titleCharacter: Sprite = null
@@ -461,5 +566,7 @@ namespace A_MAZE_ING {
     let cursor: Sprite = null
     let levelMenu = 0
     let titleCharacterImg: Image = null
+    let maxLevels = 9
+    let numLevels = 0
 
 }
